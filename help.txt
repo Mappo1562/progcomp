@@ -1,0 +1,103 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+
+
+int main(){
+    string trash, order_type, X, Y;
+    int n,x,y,aux;
+    cin>>aux;
+    while (aux){
+        int F=1;
+        map<int,int> a;
+        map<int,int,greater<int>> b;
+        aux--;
+        cin>>n;
+        while (n){
+            string trato = "-";
+            n--;
+            getline(cin,order_type,' ');
+            getline(cin,X,' ');
+            getline(cin,trash,' ');
+            getline(cin,trash,' ');
+            getline(cin,Y,'\n');
+            x = stoi(X); // cantidad
+            y = stoi(Y); // precio
+            // cout<<order_type<<" "<<x<<" "<<y<<"\n";
+            order_type.erase(remove(order_type.begin(), order_type.end(), '\n'), order_type.end());
+            // cout<<"order type = ["<<order_type<<"]\n";
+            if (order_type != "sell"){ // lo q se esta dispuesto a pagar
+                auto it = a.begin();
+                if (y >= it->first  and a.begin()!=a.end()){// hay trato
+                    trato = to_string(it->first);
+                    if (it->second == x){
+                        a.erase(it->first);
+                    }
+                    else if (it->second < x){
+                        x = x - it->second;
+                        a.erase(it->first);
+                        b.insert(make_pair(y,x));
+                    }
+                    else{
+                        it->second -= x;
+                    }
+                }
+                else{
+                    b.insert(make_pair(y,x));
+                }
+            } 
+            else{
+                auto it = b.begin(); // y = precio nuevo a vender
+                if (y <= it->first and b.begin()!=b.end()){
+                    trato = to_string(y);
+                    if (it->second == x){
+                        b.erase(it->first);
+                    }
+                    else if (it->second < x){
+                        x = x - it->second;
+                        b.erase(it->first);
+                        a.insert(make_pair(y,x));
+                    }
+                    else{
+                        it->second -= x;
+                    }
+                }
+                else{
+                    a.insert(make_pair(y,x));
+                }
+            }
+
+
+            while (!a.empty() && !b.empty() && a.begin()->first <= b.begin()->first){
+                auto it = a.begin();
+                trato = to_string(it->first);
+                if (it->second == x){
+                    a.erase(it->first);
+                }
+                else if (it->second < x){
+                    x = x - it->second;
+                    a.erase(it->first);
+                    b.insert(make_pair(y,x));
+                }
+                else{
+                    it->second -= x;
+                }
+            }
+
+            if (a.empty()){
+                cout<<"- ";
+            }
+            else{
+                cout<<a.begin()->first<<" ";
+            }
+            if (b.empty()){
+                cout<<"- ";
+            }
+            else{
+                cout<<b.begin()->first<<" ";
+            }
+            cout<<trato<<"\n";
+        }
+    }
+}
