@@ -1,23 +1,19 @@
-// A ask price :  el precio mas bajo que alguien esta dispuesto a VENDER
-// B bird price:  el precio mas alto que alguien esta dispuesto a PAGAR
-// S stock price: el precio de la ultima operacion
 
-// B >= A -> hay trato, se vende al valor de A
 #include <bits/stdc++.h>
 using namespace std;
 
 int main(){
-    vector<int> arr;
-    int n,b,pos;
+    int n,b;
     cin>>n>>b;
+    vector<int> arr(n);
     int x = -1; 
     for (int i=0;i<n;i++){
         cin>>arr[i];
-        if (arr[i] = b){
+        if (arr[i] == b){
             x = i;
         }
     }
-    if (x=-1){
+    if (x==-1){
         cout<<"0\n";
         return 0;
     }
@@ -38,8 +34,9 @@ int main(){
     }
     
     // la otra mitad tambien se revisa, y se guarda el resultado en r
-    int r=1;
+    int r=0;
     pos=0;
+
     for (int i=x+1;i<n;i++){
         if (arr[i]<b)
             pos--;
@@ -47,5 +44,6 @@ int main(){
             pos++;
         r += map[-pos]; //si existe el inverso, se suman todas las repeticiones
     }
+    r+=map[0];
     cout<<r<<"\n";
 }
